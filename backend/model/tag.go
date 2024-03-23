@@ -2,8 +2,8 @@ package model
 
 type (
 	TAG struct{
-		ID			int64
-		Memory_ID	int64
-		Label		string
+		ID			int64	`json:"id"`
+		MemoryID	int64	`json:"memory_id"`
+		Label		string	`json:"label"`
 	}
 )
