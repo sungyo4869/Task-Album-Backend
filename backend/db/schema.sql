@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS users (
     id          INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name        CHAR(64) NOT NULL,
+    username    CHAR(64) NOT NULL,
     password    CHAR(255) NOT NULL,
     email       CHAR(255) NOT NULL
 );
