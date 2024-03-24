@@ -1,7 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"log"
+
+	"github.com/sungyo4869/portfolio/db"
+)
 
 func main() {
-	fmt.Println("Hello, World")
+	db, err := db.NewDB("root", "pass", "testdb", "mysql", "3306")
+	if err != nil {
+		log.Fatalln("main: err =", err)
+	}
+
+	defer db.Close()
 }
+
