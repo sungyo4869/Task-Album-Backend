@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/joho/godotenv"
 
 	"github.com/sungyo4869/portfolio/db"
 	"github.com/sungyo4869/portfolio/handler/router"
