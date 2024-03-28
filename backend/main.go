@@ -1,17 +1,55 @@
 package main
 
 import (
+	"github.com/joho/godotenv"
 	"log"
+	"net/http"
+	"os"
 
 	"github.com/sungyo4869/portfolio/db"
+	"github.com/sungyo4869/portfolio/handler/router"
 )
 
 func main() {
-	db, err := db.NewDB("root", "pass", "testdb", "mysql", "3306")
+	realMain()
+}
+
+func realMain() {
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Print(err)
+		return
+	}
+
+	port := os.Getenv("PORT")
+
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("DB_PASS")
+	dbName := os.Getenv("DB_NAME")
+	dbPath := os.Getenv("DB_PATH")
+	dbPort := os.Getenv("DB_PORT")
+
+	log.Print(port)
+	log.Print(dbUser)
+	log.Print(dbPass)
+	log.Print(dbName)
+	log.Print(dbPath)
+	log.Print(dbPort)
+
+	db, err := db.NewDB(dbUser, dbPass, dbName, dbPath, dbPort)
 	if err != nil {
 		log.Fatalln("main: err =", err)
 	}
-
 	defer db.Close()
-}
 
+	mux := router.NewRouter(db)
+
+	srv := &http.Server{
+		Addr:    port,
+		Handler: mux,
+	}
+
+	srv.ListenAndServe()
+
+}

@@ -5,15 +5,11 @@ import (
 	"fmt"
 	"time"
 
-	_ "embed"
-
 	"github.com/go-sql-driver/mysql"
 )
 
-//go:embed schema.sql
-var schema string
-
 func NewDB(user, pass, dbName, host, port string) (*sql.DB, error) {
+
 	jst, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
 		return nil, err
@@ -32,12 +28,8 @@ func NewDB(user, pass, dbName, host, port string) (*sql.DB, error) {
 		Loc:       jst,
 	}
 
-	db, err := sql.Open("mysql", c.FormatDSN())
+	db, err := sql.Open("mysql", c.FormatDSN())	
 	if err != nil {
-		return nil, err
-	}
-
-	if _, err := db.Exec(schema); err != nil {
 		return nil, err
 	}
 
