@@ -1,29 +1,33 @@
 CREATE TABLE IF NOT EXISTS users (
-    id          INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    username    CHAR(64) NOT NULL,
-    password    CHAR(255) NOT NULL,
-    email       CHAR(255) NOT NULL
+    id INT NOT NULL AUTO_INCREMENT,
+    username VARCHAR(64) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS memories (
-    id          INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    title       CHAR(64) NOT NULL,
-    summary     CHAR(255) NOT NULL,
-    time_limit  DATETIME NOT NULL,
-    status      enum('Planning', 'Running', 'Completion') NOT NULL,
-    description CHAR(255) NOT NULL
+    id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(64) NOT NULL,
+    summary VARCHAR(255) NOT NULL,
+    time_limit DATETIME NOT NULL,
+    status ENUM('planning', 'running', 'completion') NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS pictures (
-    id          INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    memory_id   INTEGER NOT NULL,
-    picture     MEDIUMBLOB NOT NULL,
-    FOREIGN KEY (memory_id) REFERENCES memories(id)
+    id INT NOT NULL AUTO_INCREMENT,
+    memory_id INT NOT NULL,
+    picture MEDIUMBLOB NOT NULL,
+    FOREIGN KEY (memory_id) REFERENCES memories(id),
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS tags (
-    id          INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    memory_id   INTEGER NOT NULL,
-    label       MEDIUMBLOB NOT NULL,
-    FOREIGN KEY (memory_id) REFERENCES memories(id)
+    id INT NOT NULL AUTO_INCREMENT,
+    memory_id INT NOT NULL,
+    label MEDIUMBLOB NOT NULL,
+    FOREIGN KEY (memory_id) REFERENCES memories(id),
+    PRIMARY KEY (id)
 );
