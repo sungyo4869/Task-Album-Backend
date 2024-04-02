@@ -20,10 +20,12 @@
     - Delete user
         - DeleteUser
             - delete
+
 - /user/login
     - GET
     - Logs user into the system
         - session?
+
 - /user/logout
     - GET
     - Logs out current logged in user
@@ -41,16 +43,23 @@
     - GET 
     - Get all cards
         - ReadTask
+            - select
 - /cards/{cardId}
     - GET
     - Get Card description
         - ReadTask
             - select
+- /cards/{cardID}
+    - PUT
+    - Update card
+        - UpdateCard
+            - update
 - /cards/{cardId}
     - DELETE
     - Delete Card
         - DeleteTask
             - delete
+
 - /cards/picture/{cardId}
     - POST
     - Create picture
@@ -58,22 +67,40 @@
             - insert
             - select
 - /cards/picture/{cardId}
+    - GET
+    - Get pictures
+        - ReadPictures
+            - select
+- /cards/picture/{cardId}
     - DELETE
     - Delete picture
         - DeletePicture
+
 - /cards/tags/{cardId}
     - POST
     - Create tag
         - CreateTag
             - insert
             - select
-- /cards/tags/{cardId}
+- /card/tags/{cardId}
+    - GET
+    - Get tags
+        - ReadTags
+            - select
+- /card/tags/{cardId}/{tagId}
+    - PUT
+    - Update tag
+        - UpdateTag
+            - update
+- /cards/tags/{cardId}/{tagId}
     - DELETE
     - Delete tag
         - DeleteTag
             - delete
+
  - /cards/status/{cardID}
     - PUT
     - Update task status
         - UpdateTask
             - update
+
