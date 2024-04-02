@@ -3,7 +3,7 @@ package model
 import "time"
 
 type (
-	MEMORY struct {
+	Memory struct {
 		ID          int64     `json:"id"`
 		Title       string    `json:"title"`
 		Summary     string    `json:"summary"`
@@ -21,7 +21,7 @@ type (
 	}
 
 	CreateTaskResponse struct {
-		Task MEMORY `json:"task"`
+		Task Memory `json:"task"`
 	}
 
 	ReadTasksRequest struct {
@@ -29,11 +29,11 @@ type (
 	}
 
 	ReadTasksResponse struct {
-		Memories []MEMORY `json:"memories"`
+		Memories []Memory `json:"memories"`
 	}
 
 	UpdateTaskRequest struct {
-		MemoryID    int64     `json:"memory_id"`
+		MemoryID    int64     `json:"Memory_id"`
 		Title       string    `json:"title"`
 		Summary     string    `json:"summary"`
 		TimeLimit   time.Time `json:"time_limit"`
@@ -41,20 +41,20 @@ type (
 	}
 
 	UpdateTaskResponse struct {
-		Task MEMORY `json:"task"`
+		Task Memory `json:"task"`
 	}
 
 	UpdateStatusRequest struct {
-		MemoryID int64  `json:"memory_id"`
+		MemoryID int64  `json:"Memory_id"`
 		Status   string `json:"status"`
 	}
 
 	UpdateStatusResponse struct {
-		Memory MEMORY `json:"memory"`
+		Memory Memory `json:"Memory"`
 	}
 
 	DeleteMemoryRequest struct {
-		MemoryID MEMORY `json:"memory"`
+		MemoryID Memory `json:"Memory"`
 	}
 
 	DeleteMemoryResponse struct{}

@@ -3,24 +3,24 @@ package model
 import "io"
 
 type (
-	PICTURE struct {
+	Picture struct {
 		ID          int64  `json:"id"`
 		MemoryID    int64  `json:"memory_id"`
-		PicturePath string `json:"picture_path"`
+		PicturePath string `json:"Picture_path"`
 	}
 
 	CreatePictureRequest struct {
 		MemoryID int64     `json:"memory_id"`
-		Picture  io.Reader `json:"picture"`
+		Picture  io.Reader `json:"Picture"`
 	}
 
 	CreatePictureResponse struct {
-		Picture PICTURE `json:"picture"`
+		Picture Picture `json:"Picture"`
 	}
 
 	DeletePictureRequest struct {
 		MemoryID  int64  `json:"memory_id"`
-		PictureID string `json:"picture_id"`
+		PictureID string `json:"Picture_id"`
 	}
 
 	DeletePictureResponse struct{}

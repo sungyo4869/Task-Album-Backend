@@ -1,7 +1,7 @@
 package model
 
 type (
-	TAG struct {
+	Tag struct {
 		ID       int64  `json:"id"`
 		MemoryID int64  `json:"memory_id"`
 		Label    string `json:"label"`
@@ -13,7 +13,7 @@ type (
 	}
 
 	CreateTagResponse struct {
-		Tag TAG `json:"tag"`
+		Tag Tag `json:"Tag"`
 	}
 
 	UpdateTagRequest struct {
@@ -22,11 +22,11 @@ type (
 	}
 
 	UpdateTagResponse struct {
-		Tag TAG `json:"tag"`
+		Tag Tag `json:"Tag"`
 	}
 
 	DeleteTagRequest struct {
-		TagID int64 `json:"tag_id"`
+		TagID int64 `json:"Tag_id"`
 	}
 
 	DeleteTagResponse struct{}
