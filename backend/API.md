@@ -2,65 +2,78 @@
 - /user
     - POST
     - Create User
-- /user/login
-    - GET
-    - Logs user into the system
-- /user/logout
-    - GET
-    - Logs out current logged in user session
+        -CreateUser()
+            - Insert
+            - select
 - /user/{username}
     - GET
     - Get user by user name
+        - ReadUser
+            - select
 - /user/{username}
     - PUT
     - Update user
+        - UpdateUser
+            - update
 - /user/{username}
     - DELETE
     - Delete user
+        - DeleteUser
+            - delete
+- /user/login
+    - GET
+    - Logs user into the system
+        - session?
+- /user/logout
+    - GET
+    - Logs out current logged in user
+        - session?
 
-## task
-- /task
+
+## cards
+- /cards
     - POST
     - Create task
-- /task
-    - GET
-    - Get all tasks
-- /task/{task_id}
-    - GET
-    - Get task description by task id
-- /task/{task_id}
-    - PUT
-    - Update task
-- /task/{task_id}
-    - DELETE
-    - Delete task
-
-## memory
-- /memory
+        - CreateCard
+            - insert
+            - select
+- /cards
     - GET 
-    - Get all memories
-- /memory/{memory_id}
+    - Get all cards
+        - ReadTask
+- /cards/{cardId}
     - GET
-    - Get memory description
-- /memory/{memory_id}
+    - Get Card description
+        - ReadTask
+            - select
+- /cards/{cardId}
     - DELETE
-    - Delete memory
-- /memory/picture/{memory_id}
+    - Delete Card
+        - DeleteTask
+            - delete
+- /cards/picture/{cardId}
     - POST
-    - Store picture
-- /memory/picture/{memory_id}
+    - Create picture
+        - CreatePicture
+            - insert
+            - select
+- /cards/picture/{cardId}
     - DELETE
     - Delete picture
-
-## tag
-- /tag/{memory_id}
+        - DeletePicture
+- /cards/tags/{cardId}
     - POST
-    - Store tag
-- /tag/{memory_id}
+    - Create tag
+        - CreateTag
+            - insert
+            - select
+- /cards/tags/{cardId}
     - DELETE
     - Delete tag
-
-## status
- - /status
+        - DeleteTag
+            - delete
+ - /cards/status/{cardID}
     - PUT
     - Update task status
+        - UpdateTask
+            - update
