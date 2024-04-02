@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS memories (
+CREATE TABLE IF NOT EXISTS cards (
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(64) NOT NULL,
     summary VARCHAR(255) NOT NULL,
@@ -18,16 +18,16 @@ CREATE TABLE IF NOT EXISTS memories (
 
 CREATE TABLE IF NOT EXISTS pictures (
     id INT NOT NULL AUTO_INCREMENT,
-    memory_id INT NOT NULL,
+    card_id INT NOT NULL,
     picture MEDIUMBLOB NOT NULL,
-    FOREIGN KEY (memory_id) REFERENCES memories(id),
+    FOREIGN KEY (card_id) REFERENCES cards(id),
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS tags (
     id INT NOT NULL AUTO_INCREMENT,
-    memory_id INT NOT NULL,
+    card_id INT NOT NULL,
     label MEDIUMBLOB NOT NULL,
-    FOREIGN KEY (memory_id) REFERENCES memories(id),
+    FOREIGN KEY (card_id) REFERENCES cards(id),
     PRIMARY KEY (id)
 );

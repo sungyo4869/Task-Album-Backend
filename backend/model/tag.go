@@ -3,30 +3,30 @@ package model
 type (
 	Tag struct {
 		ID       int64  `json:"id"`
-		MemoryID int64  `json:"memory_id"`
+		CardID int64  `json:"card_id"`
 		Label    string `json:"label"`
 	}
 
 	CreateTagRequest struct {
-		MemoryID int64  `json:"memory_id"`
+		CardID int64  `json:"card_id"`
 		Label    string `json:"label"`
 	}
 
 	CreateTagResponse struct {
-		Tag Tag `json:"Tag"`
+		Tag Tag `json:"tag"`
 	}
 
 	UpdateTagRequest struct {
-		MemoryID int64  `json:"memory_id"`
+		CardID int64  `json:"card_id"`
 		Label    string `json:"label"`
 	}
 
 	UpdateTagResponse struct {
-		Tag Tag `json:"Tag"`
+		Tag Tag `json:"tag"`
 	}
 
 	DeleteTagRequest struct {
-		TagID int64 `json:"Tag_id"`
+		TagID int64 `json:"tag_id"`
 	}
 
 	DeleteTagResponse struct{}

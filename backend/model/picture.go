@@ -5,22 +5,22 @@ import "io"
 type (
 	Picture struct {
 		ID          int64  `json:"id"`
-		MemoryID    int64  `json:"memory_id"`
-		PicturePath string `json:"Picture_path"`
+		CardID    int64  `json:"card_id"`
+		PicturePath string `json:"picture_path"`
 	}
 
 	CreatePictureRequest struct {
-		MemoryID int64     `json:"memory_id"`
-		Picture  io.Reader `json:"Picture"`
+		CardID int64     `json:"card_id"`
+		Picture  io.Reader `json:"picture"`
 	}
 
 	CreatePictureResponse struct {
-		Picture Picture `json:"Picture"`
+		Picture Picture `json:"picture"`
 	}
 
 	DeletePictureRequest struct {
-		MemoryID  int64  `json:"memory_id"`
-		PictureID string `json:"Picture_id"`
+		CardID  int64  `json:"card_id"`
+		PictureID string `json:"picture_id"`
 	}
 
 	DeletePictureResponse struct{}
