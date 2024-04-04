@@ -25,7 +25,28 @@ func (s *CardService) CreateCard(ctx context.Context, title, summary, time_limit
 
 	var card model.Card
 
-	_, err := s.db.ExecContext(ctx, insert, title, summary, time_limit, status, description)
+	result, err := s.db.ExecContext(ctx, insert, title, summary, time_limit, status, description)
+
+	if err != nil {
+		return nil, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	row := s.db.QueryRowContext(ctx, confirm, id)
+
+	err = row.Scan(
+		&card.Title,
+		&card.Summary,
+		&card.TimeLimit,
+		&card.Status,
+		&card.Description,
+	)
+
+	card.ID = id
 
 	if err != nil {
 		return nil, err
