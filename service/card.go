@@ -18,7 +18,7 @@ func NewCardService(db *sql.DB) *CardService {
 	}
 }
 
-func (s *CardService) CreateCard(ctx context.Context, title, summary, status, description string, time_limit time.Time) (*model.Card, error) {
+func (s *CardService) CreateCard(ctx context.Context, title, summary, status, description string, timeLimit time.Time) (*model.Card, error) {
 	const (
 		insert  = `INSERT INTO cards(title, summary, time_limit, status, description) VALUES(?, ?, ?, ?, ?)`
 		confirm = `SELECT title, summary, time_limit, status, description FROM cards WHERE id = ?`
@@ -26,7 +26,7 @@ func (s *CardService) CreateCard(ctx context.Context, title, summary, status, de
 
 	var card model.Card
 
-	result, err := s.db.ExecContext(ctx, insert, title, summary, time_limit, status, description)
+	result, err := s.db.ExecContext(ctx, insert, title, summary, timeLimit, status, description)
 
 	if err != nil {
 		return nil, err
@@ -59,12 +59,36 @@ func (s *CardService) ReadCard(ctx context.Context) ([]*model.Card, error) {
 	const (
 		Read =`SELECT title, summary, time_limit, status, description FROM cards WHERE id = ?`
 	)
-
 	var cards []*model.Card
+
+	rows, err := s.db.QueryContext(ctx, Read)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var card model.Card
+		err := rows.Scan(
+			&card.ID,
+			&card.Title,
+			&card.Summary,
+			&card.TimeLimit,
+			&card.Status,
+			&card.Description,
+		)
+		if err != nil {
+			return nil, err
+		}
+		cards = append(cards, &card)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
 
 	return cards, nil
 }
-func (s *CardService) UpdateCard(ctx context.Context) (*model.Card, error) {
+func (s *CardService) UpdateCard(ctx context.Context, title, summary, status, description string, timeLimit time.Time, id int) (*model.Card, error) {
 	const (
 		update  = `UPDATE cards SET title = ?, summary = ?, time_limit = ?, status = ?, description = ? WHERE id = ?`
 		confirm = `SELECT title, summary, time_limit, status, description FROM cards WHERE id = ?`
@@ -72,10 +96,35 @@ func (s *CardService) UpdateCard(ctx context.Context) (*model.Card, error) {
 
 	var card model.Card
 
+	_, err := s.db.ExecContext(ctx, update, title, summary, timeLimit, status, description, id)
+	if err != nil {
+		return nil, err
+	}
+
+	row := s.db.QueryRowContext(ctx, confirm)
+
+	err = row.Scan(
+		&card.ID,
+		&card.Title,
+		&card.Summary,
+		&card.TimeLimit,
+		&card.Status,
+		&card.Description,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return &card, nil
 }
-func (s *CardService) DeleteCard(ctx context.Context) error {
-	const deleteFmt = `DELETE FROM cards WHERE id IN (?%s)`
+func (s *CardService) DeleteCard(ctx context.Context, id int) error {
+	const delete = `DELETE FROM cards WHERE id IN (?%s)`
+
+	_, err := s.db.ExecContext(ctx, delete, id)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
