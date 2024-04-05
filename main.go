@@ -31,13 +31,6 @@ func realMain() {
 	dbPath := os.Getenv("DB_PATH")
 	dbPort := os.Getenv("DB_PORT")
 
-	log.Print(port)
-	log.Print(dbUser)
-	log.Print(dbPass)
-	log.Print(dbName)
-	log.Print(dbPath)
-	log.Print(dbPort)
-
 	db, err := db.NewDB(dbUser, dbPass, dbName, dbPath, dbPort)
 	if err != nil {
 		log.Fatalln("main: err =", err)
