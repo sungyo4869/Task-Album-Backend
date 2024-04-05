@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/sungyo4869/portfolio/model"
 )
@@ -17,7 +18,7 @@ func NewCardService(db *sql.DB) *CardService {
 	}
 }
 
-func (s *CardService) CreateCard(ctx context.Context, title, summary, time_limit, status, description string) (*model.Card, error) {
+func (s *CardService) CreateCard(ctx context.Context, title, summary, status, description string, time_limit time.Time) (*model.Card, error) {
 	const (
 		insert  = `INSERT INTO cards(title, summary, time_limit, status, description) VALUES(?, ?, ?, ?, ?)`
 		confirm = `SELECT title, summary, time_limit, status, description FROM cards WHERE id = ?`
