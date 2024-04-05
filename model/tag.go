@@ -2,14 +2,14 @@ package model
 
 type (
 	Tag struct {
-		ID       int64  `json:"id"`
+		ID     int64  `json:"id"`
 		CardID int64  `json:"card_id"`
-		Label    string `json:"label"`
+		Label  string `json:"label"`
 	}
 
 	CreateTagRequest struct {
 		CardID int64  `json:"card_id"`
-		Label    string `json:"label"`
+		Label  string `json:"label"`
 	}
 
 	CreateTagResponse struct {
@@ -18,7 +18,7 @@ type (
 
 	UpdateTagRequest struct {
 		CardID int64  `json:"card_id"`
-		Label    string `json:"label"`
+		Label  string `json:"label"`
 	}
 
 	UpdateTagResponse struct {

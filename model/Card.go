@@ -16,8 +16,6 @@ type (
 		Title       string    `json:"title"`
 		Summary     string    `json:"summary"`
 		TimeLimit   time.Time `json:"time_limit"`
-		Status      string    `json:"status"`
-		Description string    `json:"description"`
 	}
 
 	CreateCardResponse struct {
@@ -29,11 +27,11 @@ type (
 	}
 
 	ReadCardsResponse struct {
-		Memories []Card `json:"memories"`
+		Cards []Card `json:"cards"`
 	}
 
 	UpdateCardRequest struct {
-		CardID    int64     `json:"Card_id"`
+		CardID    int64     `json:"card_id"`
 		Title       string    `json:"title"`
 		Summary     string    `json:"summary"`
 		TimeLimit   time.Time `json:"time_limit"`
