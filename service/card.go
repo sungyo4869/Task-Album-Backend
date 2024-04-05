@@ -57,7 +57,7 @@ func (s *CardService) CreateCard(ctx context.Context, title, summary, status, de
 }
 func (s *CardService) ReadCard(ctx context.Context) ([]*model.Card, error) {
 	const (
-		Read = `INSERT INTO cards(title, summary, time_limit, status, description) VALUES(?, ?, ?, ?,?) ORDER BY id DESC`
+		Read =`SELECT title, summary, time_limit, status, description FROM cards WHERE id = ?`
 	)
 
 	var cards []*model.Card
