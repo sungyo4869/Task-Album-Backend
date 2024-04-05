@@ -12,7 +12,7 @@ type (
 		Description string    `json:"description"`
 	}
 
-	CreateTaskRequest struct {
+	CreateCardRequest struct {
 		Title       string    `json:"title"`
 		Summary     string    `json:"summary"`
 		TimeLimit   time.Time `json:"time_limit"`
@@ -20,19 +20,19 @@ type (
 		Description string    `json:"description"`
 	}
 
-	CreateTaskResponse struct {
-		Task Card `json:"task"`
+	CreateCardResponse struct {
+		Card Card `json:"card"`
 	}
 
-	ReadTasksRequest struct {
+	ReadCardsRequest struct {
 		PrevID int64 `json:"prev_id"`
 	}
 
-	ReadTasksResponse struct {
+	ReadCardsResponse struct {
 		Memories []Card `json:"memories"`
 	}
 
-	UpdateTaskRequest struct {
+	UpdateCardRequest struct {
 		CardID    int64     `json:"Card_id"`
 		Title       string    `json:"title"`
 		Summary     string    `json:"summary"`
@@ -40,21 +40,21 @@ type (
 		Description string    `json:"description"`
 	}
 
-	UpdateTaskResponse struct {
-		Task Card `json:"task"`
+	UpdateCardResponse struct {
+		Card Card `json:"card"`
 	}
 
 	UpdateStatusRequest struct {
-		CardID int64  `json:"Card_id"`
+		CardID int64  `json:"card_id"`
 		Status   string `json:"status"`
 	}
 
 	UpdateStatusResponse struct {
-		Card Card `json:"Card"`
+		Card Card `json:"card"`
 	}
 
 	DeleteCardRequest struct {
-		CardID Card `json:"Card"`
+		CardID Card `json:"card_id"`
 	}
 
 	DeleteCardResponse struct{}
