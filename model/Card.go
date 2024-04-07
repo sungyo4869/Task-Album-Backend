@@ -16,7 +16,6 @@ type (
 		Title       string    `json:"title"`
 		Summary     string    `json:"summary"`
 		TimeLimit   time.Time `json:"time_limit"`
-		Status      string    `json:"status"`
 		Description string    `json:"description"`
 	}
 
@@ -24,12 +23,10 @@ type (
 		Card Card `json:"card"`
 	}
 
-	ReadCardsRequest struct {
-		PrevID int64 `json:"prev_id"`
-	}
+	ReadCardsRequest struct {}
 
 	ReadCardsResponse struct {
-		Memories []Card `json:"memories"`
+		Memories []*Card `json:"memories"`
 	}
 
 	UpdateCardRequest struct {
@@ -54,7 +51,7 @@ type (
 	}
 
 	DeleteCardRequest struct {
-		CardID Card `json:"card_id"`
+		CardID int64 `json:"card_id"`
 	}
 
 	DeleteCardResponse struct{}
