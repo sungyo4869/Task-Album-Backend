@@ -17,8 +17,43 @@ func NewPictureService(db *sql.DB) *PictureService {
 	}
 }
 
-func (s *PictureService) CreatePicture(ctx context.Context) ([]*model.Picture, error) {
+func (s *PictureService) CreatePicture(ctx context.Context, card_id int64, path string) ([]*model.Picture, error) {
 	var pictures []*model.Picture
+
+	const (
+		insert  = `INSERT INTO pictures(card_id, path) VALUES(?, ?)`
+		confirm = `SELECT id, card_id, path FROM pictures WHERE id = ?`
+	)
+
+	result, err := s.db.ExecContext(ctx, insert, card_id, path)
+
+	if err != nil {
+		return nil, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := s.db.QueryContext(ctx, confirm, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var picture model.Picture
+		err := rows.Scan(
+			&picture.ID,
+			&picture.CardID,
+			&picture.PicturePath,
+		)
+		if err != nil {
+			return nil, err
+		}
+		pictures = append(pictures, &picture)
+	}
 
 	return pictures, nil
 }
