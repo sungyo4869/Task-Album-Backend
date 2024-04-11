@@ -55,14 +55,40 @@ func (s *PictureService) CreatePicture(ctx context.Context, card_id int64, path 
 func (s *PictureService) ReadPicture(ctx context.Context) ([]*model.Picture, error) {
 	var pictures []*model.Picture
 
-	return pictures, nil
-}
-func (s *PictureService) UpdatePicture(ctx context.Context) ([]*model.Picture, error) {
-	var pictures []*model.Picture
+	const query = `SELECT id, card_id, path FROM pictures`
+
+	rows, err := s.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var picture model.Picture
+		err := rows.Scan(
+			&picture.ID, 
+			&picture.CardID, 
+			&picture.PicturePath,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		pictures = append(pictures, &picture)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
 
 	return pictures, nil
 }
-func (s *PictureService) DeletePicture(ctx context.Context) error {
+
+func (s *PictureService) DeletePicture(ctx context.Context, pictureID int64) error {
+	const query = `DELETE FROM pictures WHERE id = ?`
+
+	_, err := s.db.ExecContext(ctx, query, pictureID)
+	if err != nil {
+		return err
+	}
 	return nil
 }
-
