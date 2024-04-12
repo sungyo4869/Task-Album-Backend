@@ -42,16 +42,49 @@ func (s *UserService) CreateUser(ctx context.Context, username, pass, email stri
 	return &user, nil
 }
 func (s *UserService) ReadUser(ctx context.Context, username, pass string) (*model.User, error) {
+	const query = `SELECT id, username, password, email FROM users WHERE username = ? AND password = ?`
+
 	var user model.User
+	row := s.db.QueryRowContext(ctx, query, username, pass)
+	if err := row.Scan(&user.ID, &user.UserName, &user.Password, &user.Email); err != nil {
+		return nil, err
+	}
 
 	return &user, nil
 }
-func (s *UserService) UpdateUser(ctx context.Context, username, pass, email string) (*model.User, error) {
+func (s *UserService) UpdateUser(ctx context.Context, username, pass, email string, id int64) (*model.User, error) {
+	const (
+		update  = `UPDATE users SET password = ?, email = ?, username = ? WHERE id = ?`
+		confirm = `SELECT username, password, email FROM users WHERE id = ?`
+	)
+
+	_, err := s.db.ExecContext(ctx, update, pass, email, username, id)
+	if err != nil {
+		return nil, err
+	}
+
 	var user model.User
+	row := s.db.QueryRowContext(ctx, confirm, id)
+
+	err = row.Scan(
+		&user.UserName, 
+		&user.Password, 
+		&user.Email,
+	)
+	if err != nil {
+		return nil, err
+	}
 
 	return &user, nil
 }
 func (s *UserService) DeleteUser(ctx context.Context, username, pass string) error {
+	const query = `DELETE FROM users WHERE username = ?`
+
+	_, err := s.db.ExecContext(ctx, query, username)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
