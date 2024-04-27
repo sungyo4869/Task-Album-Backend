@@ -25,7 +25,7 @@ type (
 	ReadCardsRequest struct {}
 
 	ReadCardsResponse struct {
-		Cards []Card `json:"cards"`
+		Cards []*Card `json:"cards"`
 	}
 
 	UpdateCardRequest struct {
