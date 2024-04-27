@@ -2,7 +2,7 @@
 - /user
     - POST
     - Create User
-        -CreateUser()
+        - CreateUser()
             - Insert
             - select
 - /user/{username}
@@ -101,6 +101,6 @@
  - /cards/status/{cardID}
     - PUT
     - Update task status
-        - UpdateTask
+        - UpdateStatus
             - update
 

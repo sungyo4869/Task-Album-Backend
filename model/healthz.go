@@ -1,5 +1,5 @@
 package model
 
-type HealthzResponse struct{
+type HealthzResponse struct {
 	Message string `json:"message"`
 }
