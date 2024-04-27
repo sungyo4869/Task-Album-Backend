@@ -22,9 +22,7 @@ type (
 		Card Card `json:"card"`
 	}
 
-	ReadCardsRequest struct {
-		PrevID int64 `json:"prev_id"`
-	}
+	ReadCardsRequest struct {}
 
 	ReadCardsResponse struct {
 		Cards []Card `json:"cards"`
@@ -52,7 +50,7 @@ type (
 	}
 
 	DeleteCardRequest struct {
-		CardID Card `json:"card_id"`
+		CardID int64 `json:"card_id"`
 	}
 
 	DeleteCardResponse struct{}
