@@ -85,7 +85,7 @@ func (c *CardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (h *CardHandler) Create(ctx context.Context, req *model.CreateCardRequest) (*model.CreateCardResponse, error) {
 	var res model.CreateCardResponse
 
-	result, err := h.svc.CreateCard(ctx, req.Title, req.Summary, req.Description, req.TimeLimit)
+	result, err := h.svc.CreateCard(ctx, req.Title, req.Summary, req.TimeLimit)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (h *CardHandler) Read(ctx context.Context) (*model.ReadCardsResponse, error
 		return nil, err
 	}
 
-	res.Memories = result
+	res.Cards = result
 
 	return &res, nil
 }

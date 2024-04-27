@@ -18,15 +18,15 @@ func NewCardService(db *sql.DB) *CardService {
 	}
 }
 
-func (s *CardService) CreateCard(ctx context.Context, title, summary, description string, timeLimit time.Time) (*model.Card, error) {
+func (s *CardService) CreateCard(ctx context.Context, title, summary string,  timeLimit time.Time) (*model.Card, error) {
 	const (
-		insert  = `INSERT INTO cards(title, summary, time_limit, description) VALUES(?, ?, ?, ?)`
-		confirm = `SELECT title, summary, time_limit, status, description FROM cards WHERE id = ?`
+		insert  = `INSERT INTO cards(title, summary, time_limit) VALUES(?, ?, ?, ?)`
+		confirm = `SELECT title, summary, time_limit, status, FROM cards WHERE id = ?`
 	)
 
 	var card model.Card
 
-	result, err := s.db.ExecContext(ctx, insert, title, summary, timeLimit, description)
+	result, err := s.db.ExecContext(ctx, insert, title, summary, timeLimit)
 
 	if err != nil {
 		return nil, err
@@ -44,7 +44,6 @@ func (s *CardService) CreateCard(ctx context.Context, title, summary, descriptio
 		&card.Summary,
 		&card.TimeLimit,
 		&card.Status,
-		&card.Description,
 	)
 
 	card.ID = id
