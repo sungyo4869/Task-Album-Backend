@@ -9,5 +9,10 @@ func NewUserinHandler() *UserHandler {
 }
 
 func (h *UserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-
+	switch r.Method {
+	case http.MethodPost:
+	case http.MethodPut:
+	case http.MethodGet:
+	case http.MethodDelete:
+	}
 }
