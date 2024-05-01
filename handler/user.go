@@ -25,7 +25,7 @@ func (u *UserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		var req model.ReadUserRequest
 		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, "Error Decoding Request", http.StatusBadRequest)
 			return
 		}
 
@@ -37,7 +37,7 @@ func (u *UserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		err = json.NewEncoder(w).Encode(res)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, "Error Encoding Response", http.StatusInternalServerError)
 		}
 	case http.MethodPost:
 	case http.MethodPut:
@@ -61,7 +61,7 @@ func (h *UserHandler) Create(ctx context.Context, req *model.CreateUserRequest) 
 func (h *UserHandler) Read(ctx context.Context, req *model.ReadUserRequest) (*model.ReadUserResponse, error) {
 	var res model.ReadUserResponse
 
-	result, err := h.svc.ReadUser(ctx, req.UserName)
+	result, err := h.svc.ReadUser(ctx, req.UserName, req.Password)
 	if err != nil {
 		return nil, err
 	}

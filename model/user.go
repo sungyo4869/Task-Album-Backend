@@ -20,6 +20,7 @@ type (
 
 	ReadUserRequest struct {
 		UserName string `json:"username"`
+		Password string `json:"password"`
 	}
 
 	ReadUserResponse struct {
