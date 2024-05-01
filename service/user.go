@@ -41,11 +41,11 @@ func (s *UserService) CreateUser(ctx context.Context, username, pass, email stri
 
 	return &user, nil
 }
-func (s *UserService) ReadUser(ctx context.Context, username, pass string) (*model.User, error) {
+func (s *UserService) ReadUser(ctx context.Context, username string) (*model.User, error) {
 	const query = `SELECT id, username, password, email FROM users WHERE username = ? AND password = ?`
 
 	var user model.User
-	row := s.db.QueryRowContext(ctx, query, username, pass)
+	row := s.db.QueryRowContext(ctx, query, username)
 	if err := row.Scan(&user.ID, &user.UserName, &user.Password, &user.Email); err != nil {
 		return nil, err
 	}
