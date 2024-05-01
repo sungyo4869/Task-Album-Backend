@@ -1,18 +1,78 @@
 package handler
 
-import "net/http"
+import (
+	"context"
+	"net/http"
 
-type UserHandler struct{}
+	"github.com/sungyo4869/portfolio/model"
+	"github.com/sungyo4869/portfolio/service"
+)
 
-func NewUserinHandler() *UserHandler {
-	return &UserHandler{}
+type UserHandler struct{
+	svc *service.UserService
 }
 
-func (h *UserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func NewUserHandler(svc *service.UserService) *UserHandler {
+	return &UserHandler{
+		svc: svc,
+	}
+}
+
+func (u *UserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
+	case http.MethodGet:
 	case http.MethodPost:
 	case http.MethodPut:
-	case http.MethodGet:
 	case http.MethodDelete:
 	}
+}
+
+func (h *UserHandler) Create(ctx context.Context, req *model.CreateUserRequest) (*model.CreateUserResponse, error) {
+	var res model.CreateUserResponse
+
+	result, err := h.svc.CreateUser(ctx, req.UserName, req.Password, req.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	res.User = *result
+
+	return &res, nil
+}
+
+func (h *UserHandler) Read(ctx context.Context, req *model.ReadUserRequest) (*model.ReadUserResponse, error) {
+	var res model.ReadUserResponse
+
+	result, err := h.svc.ReadUser(ctx, req.UserName)
+	if err != nil {
+		return nil, err
+	}
+
+	res.User = *result
+
+	return &res, nil
+}
+
+func (h *UserHandler) Update(ctx context.Context, req *model.UpdateUserRequest, id int64) (*model.UpdateUserResponse, error) {
+	var res model.UpdateUserResponse
+
+	result, err := h.svc.UpdateUser(ctx, req.UserName, req.Password, req.Email, id)
+	if err != nil {
+		return nil, err
+	}
+
+	res.User = *result
+
+	return &res, nil
+}
+
+func (h *UserHandler) Delete(ctx context.Context, req *model.DeleteUserRequest) (*model.DeleteUserResponse, error) {
+	var res model.DeleteUserResponse
+
+	err := h.svc.DeleteUser(ctx, req.UserName, req.Password)
+	if err != nil {
+		return nil, err
+	}
+
+	return &res, nil
 }
