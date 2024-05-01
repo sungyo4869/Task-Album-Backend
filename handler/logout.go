@@ -10,9 +10,7 @@ func NewLogoutHandler() *LogoutHandler {
 
 func (h *LogoutHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
-	case http.MethodPost:
-	case http.MethodPut:
 	case http.MethodGet:
-	case http.MethodDelete:
+		
 	}
 }
