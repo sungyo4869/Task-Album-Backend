@@ -40,6 +40,24 @@ func (u *UserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error Encoding Response", http.StatusInternalServerError)
 		}
 	case http.MethodPost:
+		var req model.CreateUserRequest
+		err := json.NewDecoder(r.Body).Decode(&req)
+		if err != nil {
+			http.Error(w, "Error Decoding Request", http.StatusBadRequest)
+			return
+		}
+
+		res, err := u.Create(r.Context(), &req)
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+
+		err = json.NewEncoder(w).Encode(res)
+		if err != nil {
+			http.Error(w, "Error Encoding Response", http.StatusInternalServerError)
+		}
+		
 	case http.MethodPut:
 	case http.MethodDelete:
 	}
