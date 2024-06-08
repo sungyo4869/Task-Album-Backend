@@ -9,6 +9,7 @@ import (
 
 	"github.com/sungyo4869/portfolio/db"
 	"github.com/sungyo4869/portfolio/handler/router"
+
 )
 
 func main() {
@@ -25,15 +26,17 @@ func realMain() {
 
 	port := os.Getenv("PORT")
 
-	dbUser := os.Getenv("DB_USER")
-	dbPass := os.Getenv("DB_PASS")
-	dbName := os.Getenv("DB_NAME")
-	dbPath := os.Getenv("DB_PATH")
-	dbPort := os.Getenv("DB_PORT")
-
-	db, err := db.NewDB(dbUser, dbPass, dbName, dbPath, dbPort)
+	db, err := db.NewDB()
 	if err != nil {
 		log.Fatalln("main: err =", err)
+	} else {
+		log.Println("errなかったぽ")
+		err = db.Ping()
+		if err != nil {
+			log.Println("pingできてないよ, err = ", err)
+		} else {
+			log.Println("pingできたっぽ")
+		}
 	}
 	defer db.Close()
 
