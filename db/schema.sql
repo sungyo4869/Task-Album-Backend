@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS cards (
 CREATE TABLE IF NOT EXISTS pictures (
     id INT NOT NULL AUTO_INCREMENT,
     card_id INT NOT NULL,
-    picture MEDIUMBLOB NOT NULL,
+    picture VARCHAR(255),
     FOREIGN KEY (card_id) REFERENCES cards(id),
     PRIMARY KEY (id)
 );
