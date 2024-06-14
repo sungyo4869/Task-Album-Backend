@@ -79,7 +79,7 @@ func (h *UserHandler) Create(ctx context.Context, req *model.CreateUserRequest) 
 func (h *UserHandler) Read(ctx context.Context, req *model.ReadUserRequest) (*model.ReadUserResponse, error) {
 	var res model.ReadUserResponse
 
-	result, err := h.svc.ReadUser(ctx, req.UserName, req.Password)
+	result, err := h.svc.ReadUser(ctx, req.Email, req.Password)
 	if err != nil {
 		return nil, err
 	}
