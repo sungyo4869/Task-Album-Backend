@@ -19,7 +19,7 @@ type (
 	}
 
 	ReadUserRequest struct {
-		UserName string `json:"username"`
+		Email string `json:"username"`
 		Password string `json:"password"`
 	}
 
