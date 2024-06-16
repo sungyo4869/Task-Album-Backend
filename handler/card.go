@@ -1,9 +1,10 @@
 package handler
 
 import (
-	"encoding/json"
-	"net/http"
 	"context"
+	"encoding/json"
+	"log"
+	"net/http"
 
 	"github.com/sungyo4869/portfolio/model"
 	"github.com/sungyo4869/portfolio/service"
@@ -25,12 +26,14 @@ func (c *CardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		res, err := c.Read(r.Context())
 		if err != nil {
 			http.Error(w, "Error reading card", http.StatusInternalServerError)
+			log.Println("CardHandler: err =", err )
 			return
 		}
 
 		err = json.NewEncoder(w).Encode(res)
 		if err != nil {
 			http.Error(w, "Error encoding response", http.StatusInternalServerError)
+			log.Println("CardHandler: err =", err )
 			return
 		}
 	case http.MethodPost:
@@ -39,13 +42,15 @@ func (c *CardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil || req.Title == "" {
 			http.Error(w, "Bad Request", http.StatusBadRequest)
+			log.Println("CardHandler: err =", err )
 			return
 		}
 
 		// reqをDBに格納する関数の呼び出し
 		res, err := c.Create(r.Context(), &req)
 		if err != nil {
-			http.Error(w, "Error creating card", http.StatusInternalServerError)
+			http.Error(w, "Error creating card ", http.StatusInternalServerError)
+			log.Println("CardHandler: err =", err )
 			return
 		}
 
@@ -53,6 +58,7 @@ func (c *CardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		err = json.NewEncoder(w).Encode(&res)
 		if err != nil {
 			http.Error(w, "Error encoding response", http.StatusInternalServerError)
+			log.Println("CardHandler: err =", err )
 			return
 		}
 
@@ -62,18 +68,21 @@ func (c *CardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil {
 			http.Error(w, "Bad Request", http.StatusBadRequest)
+			log.Println("CardHandler: err =", err )
 			return
 		}
 		// reqをDBに格納する関数の呼び出し
 		res, err := c.Update(r.Context(), &req)
 		if err != nil {
 			http.Error(w, "Error Updating card", http.StatusInternalServerError)
+			log.Println("CardHandler: err =", err )
 			return
 		}
 
 		err = json.NewEncoder(w).Encode(&res)
 		if err != nil {
 			http.Error(w, "Error encoding response", http.StatusInternalServerError)
+			log.Println("CardHandler: err =", err )
 		}
 
 	case http.MethodDelete:

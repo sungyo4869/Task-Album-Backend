@@ -20,13 +20,13 @@ func NewCardService(db *sql.DB) *CardService {
 
 func (s *CardService) CreateCard(ctx context.Context, title, summary string,  timeLimit time.Time) (*model.Card, error) {
 	const (
-		insert  = `INSERT INTO cards(title, summary, time_limit) VALUES(?, ?, ?, ?)`
-		confirm = `SELECT title, summary, time_limit, status, FROM cards WHERE id = ?`
+		insert  = `INSERT INTO cards(title, summary, time_limit, status) VALUES(?, ?, ?, ?)`
+		confirm = `SELECT title, summary, time_limit, status FROM cards WHERE id = ?`
 	)
 
 	var card model.Card
 
-	result, err := s.db.ExecContext(ctx, insert, title, summary, timeLimit)
+	result, err := s.db.ExecContext(ctx, insert, title, summary, timeLimit, "planning")
 
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func (s *CardService) CreateCard(ctx context.Context, title, summary string,  ti
 }
 func (s *CardService) ReadCard(ctx context.Context) ([]*model.Card, error) {
 	const (
-		Read =`SELECT title, summary, time_limit, status, description FROM cards WHERE id = ?`
+		Read =`SELECT id, title, summary, time_limit, status, description FROM cards`
 	)
 	var cards []*model.Card
 
@@ -100,7 +100,7 @@ func (s *CardService) UpdateCard(ctx context.Context, title, summary, descriptio
 		return nil, err
 	}
 
-	row := s.db.QueryRowContext(ctx, confirm)
+	row := s.db.QueryRowContext(ctx, confirm, id)
 
 	err = row.Scan(
 		&card.ID,
