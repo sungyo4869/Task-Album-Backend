@@ -12,14 +12,14 @@ CREATE TABLE IF NOT EXISTS cards (
     summary VARCHAR(255) NOT NULL,
     time_limit DATETIME NOT NULL,
     status ENUM('planning', 'running', 'completion') NOT NULL,
-    description VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS pictures (
     id INT NOT NULL AUTO_INCREMENT,
     card_id INT NOT NULL,
-    picture VARCHAR(255),
+    picture_url VARCHAR(255),
     FOREIGN KEY (card_id) REFERENCES cards(id),
     PRIMARY KEY (id)
 );
