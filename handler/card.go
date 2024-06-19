@@ -107,7 +107,7 @@ func (h *CardHandler) Create(ctx context.Context, req *model.CreateCardRequest) 
 func (h *CardHandler) Read(ctx context.Context) (*model.ReadCardsResponse, error) {
 	var res model.ReadCardsResponse
 
-	result, err := h.svc.ReadCard(ctx)
+	result, err := h.svc.ReadCards(ctx)
 	if err != nil {
 		return nil, err
 	}

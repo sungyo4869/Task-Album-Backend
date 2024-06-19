@@ -54,7 +54,8 @@ func (s *CardService) CreateCard(ctx context.Context, title, summary string,  ti
 
 	return &card, nil
 }
-func (s *CardService) ReadCard(ctx context.Context) ([]*model.Card, error) {
+
+func (s *CardService) ReadCards(ctx context.Context) ([]*model.Card, error) {
 	const (
 		Read =`SELECT id, title, summary, time_limit, status, description FROM cards`
 	)
@@ -68,16 +69,24 @@ func (s *CardService) ReadCard(ctx context.Context) ([]*model.Card, error) {
 
 	for rows.Next() {
 		var card model.Card
+		var description sql.NullString
+
 		err := rows.Scan(
 			&card.ID,
 			&card.Title,
 			&card.Summary,
 			&card.TimeLimit,
 			&card.Status,
-			&card.Description,
+			&description,
 		)
 		if err != nil {
 			return nil, err
+		}
+		
+		if description.Valid {
+			card.Description = description.String
+		} else {
+			card.Description = ""
 		}
 		cards = append(cards, &card)
 	}
@@ -87,6 +96,7 @@ func (s *CardService) ReadCard(ctx context.Context) ([]*model.Card, error) {
 
 	return cards, nil
 }
+
 func (s *CardService) UpdateCard(ctx context.Context, title, summary, description string, timeLimit time.Time, id int64) (*model.Card, error) {
 	const (
 		update  = `UPDATE cards SET title = ?, summary = ?, time_limit = ?, description = ? WHERE id = ?`
