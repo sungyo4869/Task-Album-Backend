@@ -13,7 +13,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func NewDB() (*sql.DB, error) {
+func NewCloudDB() (*sql.DB, error) {
 	
 	err := godotenv.Load()
 	if err != nil {

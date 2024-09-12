@@ -71,6 +71,10 @@ func (h *LoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			log.Println("Login: Filed to encoding json, err = ", err)
 			return
 		}
+
+		log.Println("ログイン成功したよ")
+		log.Println(token)
+		log.Println(res.Token)
 	}
 }
 
@@ -81,7 +85,7 @@ func (h *LoginHandler) GenerateToken(uid int64) (string, error) {
 	expirationTime := time.Now().Add(time.Hour * 1).Unix()
 
 	claims := jwt.MapClaims{
-		"user_id": uid,
+		"user_id": float64(uid),
 		"exp":     expirationTime, // トークンの有効期限（1時間）
 	}
 

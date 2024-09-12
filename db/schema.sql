@@ -8,18 +8,20 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS cards (
     id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
     title VARCHAR(64) NOT NULL,
     summary VARCHAR(255) NOT NULL,
     time_limit DATETIME NOT NULL,
     status ENUM('planning', 'running', 'completion') NOT NULL,
-    description VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES users(id),
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS pictures (
     id INT NOT NULL AUTO_INCREMENT,
     card_id INT NOT NULL,
-    picture VARCHAR(255),
+    picture_url VARCHAR(255),
     FOREIGN KEY (card_id) REFERENCES cards(id),
     PRIMARY KEY (id)
 );
