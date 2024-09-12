@@ -18,15 +18,15 @@ func NewCardService(db *sql.DB) *CardService {
 	}
 }
 
-func (s *CardService) CreateCard(ctx context.Context, title, summary string,  timeLimit time.Time) (*model.Card, error) {
+func (s *CardService) CreateCard(ctx context.Context, uid int64, title, summary string,  timeLimit time.Time) (*model.Card, error) {
 	const (
-		insert  = `INSERT INTO cards(title, summary, time_limit, status) VALUES(?, ?, ?, ?)`
+		insert  = `INSERT INTO cards(user_id, title, summary, time_limit, status) VALUES(?, ?, ?, ?, ?)`
 		confirm = `SELECT title, summary, time_limit, status FROM cards WHERE id = ?`
 	)
 
 	var card model.Card
 
-	result, err := s.db.ExecContext(ctx, insert, title, summary, timeLimit, "planning")
+	result, err := s.db.ExecContext(ctx, insert, uid, title, summary, timeLimit, "planning")
 
 	if err != nil {
 		return nil, err
@@ -55,13 +55,13 @@ func (s *CardService) CreateCard(ctx context.Context, title, summary string,  ti
 	return &card, nil
 }
 
-func (s *CardService) ReadCards(ctx context.Context) ([]*model.Card, error) {
+func (s *CardService) ReadCards(ctx context.Context, uid int64) ([]*model.Card, error) {
 	const (
-		Read =`SELECT id, title, summary, time_limit, status, description FROM cards`
+		Read =`SELECT id, title, summary, time_limit, status, description FROM cards WHERE user_id = ?`
 	)
 	var cards []*model.Card
 
-	rows, err := s.db.QueryContext(ctx, Read)
+	rows, err := s.db.QueryContext(ctx, Read, uid)
 	if err != nil {
 		return nil, err
 	}

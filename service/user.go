@@ -21,7 +21,7 @@ func NewUserService(db *sql.DB) *UserService {
 func (s *UserService) CreateUser(ctx context.Context, username, pass, email string) (*model.User, error) {
 	const (
 		insert  = `INSERT INTO users(username, password, email) VALUES(?, ?, ?)`
-		confirm = `SELECT id, username, password, email FROM users WHERE id = ?`
+		confirm = `SELECT username, password, email FROM users WHERE id = ?`
 	)
 
 	result, err := s.db.ExecContext(ctx, insert, username, pass, email)
@@ -35,11 +35,11 @@ func (s *UserService) CreateUser(ctx context.Context, username, pass, email stri
 	}
 
 	var user model.User
-	row := s.db.QueryRowContext(ctx, confirm, id)
-	if err := row.Scan(&user.ID, &user.UserName, &user.Password, &user.Email); err != nil {
+
+	if err := s.db.QueryRowContext(ctx, confirm, id).Scan(&user.UserName, &user.Password, &user.Email); err != nil {
 		return nil, err
 	}
-
+	user.ID = id
 	return &user, nil
 }
 func (s *UserService) ReadUser(ctx context.Context, email, pass string) (*model.User, error) {

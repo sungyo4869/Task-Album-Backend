@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/sungyo4869/portfolio/handler/middleware"
 	"github.com/sungyo4869/portfolio/model"
 	"github.com/sungyo4869/portfolio/service"
 )
@@ -23,7 +24,19 @@ func NewCardHandler(svc *service.CardService) *CardHandler {
 func (c *CardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		res, err := c.Read(r.Context())
+		var req model.ReadCardsRequest
+
+		userID, ok := r.Context().Value(middleware.UserIDKey{}).(int64)
+		if !ok {
+            http.Error(w, "ユーザーIDが見つかりません", http.StatusUnauthorized)
+            return
+        } else {
+			log.Println("user-id: ", userID)
+		}
+
+		req.UID = userID
+
+		res, err := c.Read(r.Context(), &req)
 		if err != nil {
 			http.Error(w, "Error reading card", http.StatusInternalServerError)
 			log.Println("CardHandler: err =", err )
@@ -36,6 +49,7 @@ func (c *CardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			log.Println("CardHandler: err =", err )
 			return
 		}
+		
 	case http.MethodPost:
 		// リクエストボディをmodel.CreateCardRequestにデコード
 		var req model.CreateCardRequest
@@ -45,6 +59,16 @@ func (c *CardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			log.Println("CardHandler: err =", err )
 			return
 		}
+
+		userID, ok := r.Context().Value(middleware.UserIDKey{}).(int64)
+		if !ok {
+            http.Error(w, "ユーザーIDが見つかりません", http.StatusUnauthorized)
+            return
+        } else {
+			log.Println("user-id: ", userID)
+		}
+
+		req.UID = userID
 
 		// reqをDBに格納する関数の呼び出し
 		res, err := c.Create(r.Context(), &req)
@@ -94,7 +118,7 @@ func (c *CardHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (h *CardHandler) Create(ctx context.Context, req *model.CreateCardRequest) (*model.CreateCardResponse, error) {
 	var res model.CreateCardResponse
 
-	result, err := h.svc.CreateCard(ctx, req.Title, req.Summary, req.TimeLimit)
+	result, err := h.svc.CreateCard(ctx, req.UID, req.Title, req.Summary, req.TimeLimit)
 	if err != nil {
 		return nil, err
 	}
@@ -104,10 +128,10 @@ func (h *CardHandler) Create(ctx context.Context, req *model.CreateCardRequest) 
 	return &res, nil
 }
 
-func (h *CardHandler) Read(ctx context.Context) (*model.ReadCardsResponse, error) {
+func (h *CardHandler) Read(ctx context.Context, req *model.ReadCardsRequest) (*model.ReadCardsResponse, error) {
 	var res model.ReadCardsResponse
 
-	result, err := h.svc.ReadCards(ctx)
+	result, err := h.svc.ReadCards(ctx, req.UID)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +144,7 @@ func (h *CardHandler) Read(ctx context.Context) (*model.ReadCardsResponse, error
 func (h *CardHandler) Update(ctx context.Context, req *model.UpdateCardRequest) (*model.UpdateCardResponse, error) {
 	var res model.UpdateCardResponse
 
-	result, err := h.svc.UpdateCard(ctx, req.Title, req.Summary, req.Description, req.TimeLimit, req.CardID)
+	result, err := h.svc.UpdateCard(ctx, req.Title, req.Summary, req.Description, req.TimeLimit, req.ID)
 	if err != nil {
 		return nil, err
 	}
